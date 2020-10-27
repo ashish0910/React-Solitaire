@@ -1,0 +1,31 @@
+.card {
+  border: 1px solid black;
+  cursor: pointer;
+  background-color: white;
+  height: 35vh;
+  width: 25vh;
+  border-radius: 2vh;
+  padding: 5px;
+}
+
+.card__rank-left {
+  text-align: left;
+}
+
+.card__rank-right {
+  text-align: left;
+  transform: rotate(180deg);
+}
+
+.card__suite-left {
+  text-align: left;
+}
+
+.card__suite-right {
+  text-align: left;
+  transform: rotate(180deg);
+}
+
+.card__suite {
+  text-align: center;
+}

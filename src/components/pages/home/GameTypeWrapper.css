@@ -1,0 +1,6 @@
+.gametypewrapper {
+  padding: 5px;
+  margin: 5px;
+  display: flex;
+  justify-content: space-evenly;
+}
