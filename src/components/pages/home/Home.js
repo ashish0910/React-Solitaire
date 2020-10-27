@@ -9,7 +9,7 @@ function Home() {
       <Header />
       <GameTypeWrapper>
         <GameType type="one-suite" />
-        <GameType type="two-suite" />
+        <GameType type="four-suite" />
         <GameType type="klondike" />
       </GameTypeWrapper>
     </div>

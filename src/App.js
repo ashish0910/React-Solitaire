@@ -1,7 +1,7 @@
 import "./App.css";
 import {
   OneSuite,
-  TwoSuite,
+  FourSuite,
   Home,
   Klondike,
   NotFound,
@@ -9,6 +9,7 @@ import {
 import * as ROUTES from "./utils/routes";
 
 import { BrowserRouter as Router, Switch } from "react-router-dom";
+import Card from "./components/Card";
 
 function App() {
   return (
@@ -18,10 +19,11 @@ function App() {
           <Home exact path={ROUTES.HOME}></Home>
           <Klondike path={ROUTES.KLONDIKE}></Klondike>
           <OneSuite path={ROUTES.ONESUITE}></OneSuite>
-          <TwoSuite path={ROUTES.TWOSUITE}></TwoSuite>
+          <FourSuite path={ROUTES.FOURSUITE}></FourSuite>
           <NotFound path="/"></NotFound>
         </Switch>
       </Router>
+      <Card isDown={false} isSelected={false} rank="3" suit="heart"></Card>
     </div>
   );
 }

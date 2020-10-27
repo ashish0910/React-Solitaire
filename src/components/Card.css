@@ -29,3 +29,11 @@
 .card__suite {
   text-align: center;
 }
+
+.card__down {
+  background-color: orange;
+}
+
+.card__selected {
+  border: 2px solid pink;
+}
