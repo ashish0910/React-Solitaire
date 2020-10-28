@@ -1,16 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import cardInfo from "../utils/cardInfo";
 
 import "./Card.css";
 
-function Card({ rank, suit, isDown, isSelected }) {
+function Card({ card, isSelected }) {
+  const [down, setdown] = useState("");
+  useEffect(() => {
+    if (card.isDown) {
+      setdown("card__down");
+    }
+  }, []);
   return (
-    <div draggable="true" className="card">
-      <div className="card__rank-left">{rank}</div>
-      <div className="card__suite-left">{cardInfo["symbol"][suit]}</div>
-      <div className="card__suite">{suit}</div>
-      <div className="card__suite-right">{cardInfo["symbol"][suit]}</div>
-      <div className="card__rank-right">{rank}</div>
+    <div className={"card " + down}>
+      <div className="card__content card__rank-left">{card.rank}</div>
+      <div className="card__content card__suite-left">
+        {cardInfo["symbol"][card.suit]}
+      </div>
+      <div className="card__content card__suite">{card.suit}</div>
+      <div className="card__content card__suite-right">
+        {cardInfo["symbol"][card.suit]}
+      </div>
+      <div className="card__content card__rank-right">{card.rank}</div>
     </div>
   );
 }

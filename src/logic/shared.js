@@ -1,5 +1,5 @@
 export const getRank = (rank) => {
-  if (rank == "K" || rank == "Q" || rank == "J" || rank == "A") {
+  if (rank === "K" || rank === "Q" || rank === "J" || rank === "A") {
     switch (rank) {
       case "K":
         return 13;

@@ -2,10 +2,9 @@
   border: 1px solid black;
   cursor: pointer;
   background-color: white;
-  height: 35vh;
-  width: 25vh;
+  height: 23vh;
+  width: 8.2vw;
   border-radius: 2vh;
-  padding: 5px;
 }
 
 .card__rank-left {
@@ -32,8 +31,27 @@
 
 .card__down {
   background-color: orange;
+  text-decoration: transparent;
+}
+
+.card__down > .card__content {
+  visibility: hidden;
 }
 
 .card__selected {
   border: 2px solid pink;
+}
+
+.card__remcards {
+  position: absolute;
+  top: 64vh;
+  left: 85vw;
+}
+
+.card__stack {
+  margin-bottom: -20vh;
+}
+
+.card__holder {
+  margin: 4% 0;
 }
