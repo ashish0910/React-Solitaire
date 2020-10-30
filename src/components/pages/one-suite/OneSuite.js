@@ -7,6 +7,8 @@ import {
   selectCard,
   removeSelection,
   drop,
+  checkDeck,
+  distributeRemCards,
 } from "../../../logic/one-suite";
 import CardHolder from "../../CardHolder";
 import Card from "../../Card";
@@ -41,31 +43,49 @@ function OneSuite() {
   return (
     <div className="onesuite">
       {cards.hasOwnProperty("decks") &&
-        cards.decks.slice(0, 10).map((deck, index) => (
+        game.decks.slice(0, 10).map((deck, index) => (
           <React.Fragment>
-            {deck.length == 0 && <CardHolder key={index + " 1"} deck={deck} />}
-            <div className="card__holder" key={index + " 2"} deck={deck}>
+            {deck.length == 0 && (
               <div>
+                <CardHolder
+                  // onClick={selectCard("", deck, true, game, setgame)}
+                  // dragEnter={(e) => {
+                  //   console.log(e.target);
+                  //   dragEnter(e, game, setgame, "", deck);
+                  // }}
+                  key={index + " 1"}
+                  deck={deck}
+                />
+              </div>
+            )}
+            <div>
+              <div key={index + " 2"} deck={deck}>
                 {deck.map((card, key) => (
                   <div
                     id={card.rank + " " + card.suit + " " + card.deck}
+                    className="card__wrapper card__stack"
+                    draggable={true}
                     onDragStart={(e) => {
                       dragStart(e, card, deck, game, setgame);
                     }}
-                    draggable={true}
-                    onDrag={(e) => drag(e, card, game, setgame)}
-                    className="card__wrapper card__stack"
+                    onDrag={(e) => {
+                      drag(e, card, game, setgame);
+                    }}
                     onDragEnter={(e) => {
                       if (card.isDown == false) {
                         dragEnter(e, game, setgame, card, deck);
                       }
                     }}
-                    onDrop={(e) => drop(e, card)}
+                    onDragEnd={(e) => {
+                      drop(e, card, game, setgame);
+                    }}
                   >
                     <Card
                       key={card.rank + " " + card.suit + " " + card.deck}
                       card={card}
                       isSelected={card.isSelected}
+                      isDown={card.isDown}
+                      isHighlighted={card.isHighlighted}
                     />
                   </div>
                 ))}
@@ -73,8 +93,13 @@ function OneSuite() {
             </div>
           </React.Fragment>
         ))}
-      {cards.hasOwnProperty("decks") && (
-        <div className="card card__down card__remcards"></div>
+      {cards.hasOwnProperty("decks") && game.decks[10].length > 0 && (
+        <div
+          onClick={(e) => {
+            distributeRemCards(game, setgame);
+          }}
+          className="card card__down card__remcards"
+        ></div>
       )}
     </div>
   );

@@ -14,6 +14,7 @@ export const populateOneSuitCards = () => {
         isDown: true,
         deck: i,
         isSelected: false,
+        isHighlighted: false,
       });
     }
   });
@@ -30,9 +31,10 @@ export const populateOneSuitCards = () => {
 };
 
 export const checkMovable = (card, deck) => {
-  var movingCards = deck.slice(deck.indexOf(card));
+  var tempDeck = [...deck];
+  var movingCards = tempDeck.slice(deck.indexOf(card));
   var ranks = movingCards.map((curCard) => {
-    getRank(curCard.rank);
+    return getRank(curCard.rank);
   });
   var curRank = getRank(card.rank);
   for (let i = 1; i < ranks.length; i++) {
@@ -55,11 +57,12 @@ export const checkMove = (target, deck, game) => {
 };
 
 export const removeSelection = (game, setgame) => {
-  if (game.selectedCard !== "") {
-    var decks = game.decks;
+  if (game.selectedCard !== "" || game.highlightedCard !== "") {
+    var decks = [...game.decks];
     for (let i = 0; i < decks.length; i++) {
       for (let j = 0; j < decks[i].length; j++) {
         decks[i][j].isSelected = false;
+        decks[i][j].isHighlighted = false;
       }
     }
     setgame((prevState) => ({
@@ -79,7 +82,6 @@ export const dragStart = (event, card, deck, game, setgame) => {
   const y = event.pageY;
   event.dataTransfer.setData("text", event.target.id);
   event.dataTransfer.setDragImage(new Image("0", "0"), -10, -10);
-  // console.log(x, y);
   setgame((prevState) => ({
     ...prevState,
     x: x,
@@ -111,20 +113,31 @@ export const drag = (event, card, game, setgame) => {
 };
 
 export const dragEnter = (event, game, setgame, card, deck) => {
+  var tempDecks = [...game.decks];
+  if (card !== "" && card != game.selectedCard) {
+    var deckIdx = tempDecks.indexOf(deck);
+    var cardIdx = tempDecks[deckIdx].indexOf(card);
+    tempDecks.forEach((deck) =>
+      deck.forEach((tempCard) => (tempCard.isHighlighted = false))
+    );
+    tempDecks[deckIdx][cardIdx].isHighlighted = true;
+  }
   setgame((prevState) => ({
     ...prevState,
     highlightedCard: card,
     highlightedDeck: deck,
+    decks: tempDecks,
   }));
 };
 
 export const moveCards = function (toDeck, fromDeck, fromCard, setgame, game) {
-  var tempDeck = game.decks;
+  var tempDeck = [...game.decks];
   var to = tempDeck.indexOf(toDeck);
   var from = tempDeck.indexOf(fromDeck);
   var cardIdx = tempDeck[from].indexOf(fromCard);
 
   var movedCards = tempDeck[from].splice(cardIdx);
+
   movedCards.forEach((card) => {
     tempDeck[to].push(card);
   });
@@ -146,7 +159,7 @@ export const selectCard = (card, deck, holder, game, setgame) => {
     if (game.selectedCard.rank == "K") {
       if (checkMovable(game.selectedCard && game.selectedDeck)) {
         moveCards(deck, game.selectedDeck, game.selectedCard);
-        // isCompleteHand(deck);
+        isHandComplete(deck, game, setgame);
         removeSelection(game, setgame);
       } else {
         removeSelection(game, setgame);
@@ -158,26 +171,24 @@ export const selectCard = (card, deck, holder, game, setgame) => {
       return;
     }
     var tempCard = card;
-    tempCard.isSelected = true;
-    setgame((prevState) => ({
-      ...prevState,
-      selectedCard: tempCard,
-      selectedDeck: deck,
-    }));
-    if (checkMovable(tempCard, deck)) {
-      var selected = deck.slice(deck.indexOf(card));
+    if (checkMovable(card, deck)) {
+      tempCard.isSelected = true;
+      var tempDeck = [...deck];
+      var selected = tempDeck.slice(deck.indexOf(card));
       selected.forEach((curCard) => {
         curCard.isSelected = true;
       });
       setgame((prevState) => ({
         ...prevState,
         selected: selected,
+        selectedCard: card,
+        selectedDeck: deck,
       }));
     } else {
       if (checkMove(tempCard, deck, game)) {
         if (checkMovable(game.card, game.deck)) {
           moveCards(deck, game.selectedDeck, game.selectedCard, setgame, game);
-          // isCompleteHand(deck);
+          isHandComplete(deck, game, setgame);
           removeSelection(game, setgame);
         } else {
           removeSelection(game, setgame);
@@ -200,16 +211,101 @@ export const drop = (event, card, game, setgame) => {
           game,
           setgame
         );
-        // isCompleteHand(game.highlightedDeck);
-        removeSelection();
+        isHandComplete(game.highlightedDeck, game, setgame);
+        removeSelection(game, setgame);
       } else {
         removeSelection(game, setgame);
       }
     }
   }
-
-  if (checkMove(game.highlightedCard, game.highlightedCard, game)) {
-    if (checkMovable(game.selectCard, game.selectedDeck)) {
+  if (checkMove(game.highlightedCard, game.highlightedDeck, game)) {
+    if (checkMovable(game.selectedCard, game.selectedDeck)) {
+      game.selected.forEach((card) => {
+        var child = document.getElementById(
+          card.rank + " " + card.suit + " " + card.deck
+        ).children[0];
+        var css = "z-index:0;pointer-events:auto;display:none;";
+        child.style.cssText = css;
+      });
+      moveCards(
+        game.highlightedDeck,
+        game.selectedDeck,
+        game.selectedCard,
+        setgame,
+        game
+      );
+      isHandComplete(game.highlightedDeck, game, setgame);
+      removeSelection(game, setgame);
+      return;
+    } else {
+      game.selected.forEach((card) => {
+        var child = document.getElementById(
+          card.rank + " " + card.suit + " " + card.deck
+        ).children[0];
+        var css = "z-index:0;pointer-events:auto;";
+        child.style.cssText = css;
+      });
+      removeSelection(game, setgame);
     }
+  } else {
+    game.selected.forEach((card) => {
+      var child = document.getElementById(
+        card.rank + " " + card.suit + " " + card.deck
+      ).children[0];
+      var css = "z-index:0;pointer-events:auto;";
+      child.style.cssText = css;
+    });
+    removeSelection(game, setgame);
+  }
+};
+
+export const checkDeck = (deck) => {
+  var ranks = deck.map((card) => {
+    return getRank(card.rank);
+  });
+  const expectedArray = [13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+  if (_.isEqual(expectedArray, ranks.slice(-13))) {
+    return ranks.length - 13;
+  }
+  return false;
+};
+
+export const isHandComplete = (deck, game, setgame) => {
+  var len = checkDeck(deck);
+  if (len !== false) {
+    var tempDecks = [...game.decks];
+    var curDeckIdx = tempDecks.indexOf(deck);
+    console.log(curDeckIdx);
+    tempDecks[curDeckIdx].splice(len);
+    var curHands = game.hands;
+    if (tempDecks[curDeckIdx].length != 0) {
+      tempDecks[curDeckIdx][tempDecks[curDeckIdx].length - 1].isDown = false;
+    }
+    setgame((prevState) => ({
+      ...prevState,
+      decks: tempDecks,
+      hands: curHands + 1,
+    }));
+    if (curHands + 1 === 8) console.log("khatam , bye bye tata");
+  }
+};
+
+export const distributeRemCards = (game, setgame) => {
+  if (game.decks[10].length !== 0) {
+    var tempDecks = [...game.decks];
+    tempDecks.forEach((tempDeck) => {
+      if (tempDecks[10].length > 0) {
+        var tempCard = tempDecks[10].pop();
+        tempCard.isDown = false;
+        tempDeck.push(tempCard);
+      }
+    });
+    setgame((prevState) => ({
+      ...prevState,
+      decks: tempDecks,
+    }));
+    tempDecks.forEach((tempDeck) => {
+      isHandComplete(tempDeck, game, setgame);
+    });
   }
 };

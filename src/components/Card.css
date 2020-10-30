@@ -1,28 +1,35 @@
 .card {
   border: 1px solid black;
   cursor: pointer;
-  background-color: white;
-  height: 23vh;
-  width: 8.2vw;
-  border-radius: 2vh;
+  width: 7vw;
+  height: 9.8vw;
+  border-radius: 0.3vw;
 }
 
 .card__rank-left {
   text-align: left;
+  margin-left: 0.2vw;
 }
 
 .card__rank-right {
   text-align: left;
+  position: relative;
   transform: rotate(180deg);
+  top: 4.7vw;
+  margin-right: 0.4vw;
 }
 
 .card__suite-left {
   text-align: left;
+  margin-left: 0.2vw;
 }
 
 .card__suite-right {
   text-align: left;
+  position: relative;
   transform: rotate(180deg);
+  top: 4.7vw;
+  margin-right: 0.4vw;
 }
 
 .card__suite {
@@ -32,6 +39,7 @@
 .card__down {
   background-color: orange;
   text-decoration: transparent;
+  margin-bottom: -8.5vw;
 }
 
 .card__down > .card__content {
@@ -39,19 +47,53 @@
 }
 
 .card__selected {
-  border: 2px solid pink;
+  border: 2px solid red;
 }
 
 .card__remcards {
   position: absolute;
-  top: 64vh;
-  left: 85vw;
+  top: 75vh;
+  left: 90vw;
 }
 
 .card__stack {
-  margin-bottom: -20vh;
+  margin-bottom: -7vw;
+  transition: all 2s smooth;
 }
 
-.card__holder {
-  margin: 4% 0;
+.card:hover {
+  box-shadow: 4px 4px 10px rgb(247, 210, 0);
+}
+
+.card__highlighted {
+  border: 2px solid palevioletred;
+}
+
+.heart {
+  background: url("../assets/heart.png") #ffffff;
+  color: red;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50%;
+}
+.spade {
+  background: url("../assets/spade.png") #ffffff;
+  color: black;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50%;
+}
+.club {
+  background: url("../assets/club.png") #ffffff;
+  color: black;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50%;
+}
+.diamond {
+  background: url("../assets/diamond.png") #ffffff;
+  color: red;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50%;
 }
