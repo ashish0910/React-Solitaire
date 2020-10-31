@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { populateOneSuitCards } from "../../../logic/one-suite";
 import {
-  populateOneSuitCards,
   dragStart,
   drag,
   dragEnter,
   selectCard,
-  removeSelection,
   drop,
-  checkDeck,
   distributeRemCards,
-} from "../../../logic/one-suite";
+} from "../../../logic/shared";
 import CardHolder from "../../CardHolder";
 import Card from "../../Card";
 

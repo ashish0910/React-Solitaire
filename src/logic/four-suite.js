@@ -1,6 +1,7 @@
 import cardInfo from "../utils/cardInfo";
 import * as _ from "lodash";
 
+// Function to generate card decks
 export const populateFourSuitCards = () => {
   let cards = [],
     decks;

@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./FourSuite.css";
 import { populateFourSuitCards } from "../../../logic/four-suite";
+import {
+  dragStart,
+  drag,
+  dragEnter,
+  selectCard,
+  drop,
+  distributeRemCards,
+} from "../../../logic/shared";
 import CardHolder from "../../CardHolder";
 import Card from "../../Card";
 function FourSuite() {
@@ -37,12 +45,12 @@ function FourSuite() {
               <div
                 id="holder"
                 key={index + "0"}
-                // onClick={() => {
-                //   selectCard("", deck, true, game, setgame);
-                // }}
-                // onDragEnter={(e) => {
-                //   dragEnter(e, game, setgame, "", deck);
-                // }}
+                onClick={() => {
+                  selectCard("", deck, true, game, setgame);
+                }}
+                onDragEnter={(e) => {
+                  dragEnter(e, game, setgame, "", deck);
+                }}
               >
                 <CardHolder key={index + " 1"} deck={deck} />
               </div>
@@ -54,20 +62,20 @@ function FourSuite() {
                       id={card.rank + " " + card.suit + " " + card.deck}
                       className="card__wrapper card__stack"
                       draggable={true}
-                      // onDragStart={(e) => {
-                      //   dragStart(e, card, deck, game, setgame);
-                      // }}
-                      // onDrag={(e) => {
-                      //   drag(e, card, game, setgame);
-                      // }}
-                      // onDragEnter={(e) => {
-                      //   if (card.isDown == false) {
-                      //     dragEnter(e, game, setgame, card, deck);
-                      //   }
-                      // }}
-                      // onDragEnd={(e) => {
-                      //   drop(e, card, game, setgame);
-                      // }}
+                      onDragStart={(e) => {
+                        dragStart(e, card, deck, game, setgame);
+                      }}
+                      onDrag={(e) => {
+                        drag(e, card, game, setgame);
+                      }}
+                      onDragEnter={(e) => {
+                        if (card.isDown == false) {
+                          dragEnter(e, game, setgame, card, deck);
+                        }
+                      }}
+                      onDragEnd={(e) => {
+                        drop(e, card, game, setgame);
+                      }}
                     >
                       <Card
                         key={card.rank + " " + card.suit + " " + card.deck}
@@ -85,9 +93,9 @@ function FourSuite() {
         ))}
       {cards.hasOwnProperty("decks") && game.decks[10].length > 0 && (
         <div
-          // onClick={(e) => {
-          //   distributeRemCards(game, setgame);
-          // }}
+          onClick={(e) => {
+            distributeRemCards(game, setgame);
+          }}
           className="card card__down card__remcards"
         ></div>
       )}
