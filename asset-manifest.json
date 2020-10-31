@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/React-Solitaire/static/css/main.04f227fb.chunk.css",
+    "main.js": "/React-Solitaire/static/js/main.a2bb368b.chunk.js",
+    "main.js.map": "/React-Solitaire/static/js/main.a2bb368b.chunk.js.map",
+    "runtime-main.js": "/React-Solitaire/static/js/runtime-main.a9576d7e.js",
+    "runtime-main.js.map": "/React-Solitaire/static/js/runtime-main.a9576d7e.js.map",
+    "static/js/2.d16c85c8.chunk.js": "/React-Solitaire/static/js/2.d16c85c8.chunk.js",
+    "static/js/2.d16c85c8.chunk.js.map": "/React-Solitaire/static/js/2.d16c85c8.chunk.js.map",
+    "static/js/3.ed400549.chunk.js": "/React-Solitaire/static/js/3.ed400549.chunk.js",
+    "static/js/3.ed400549.chunk.js.map": "/React-Solitaire/static/js/3.ed400549.chunk.js.map",
+    "index.html": "/React-Solitaire/index.html",
+    "static/css/main.04f227fb.chunk.css.map": "/React-Solitaire/static/css/main.04f227fb.chunk.css.map",
+    "static/js/2.d16c85c8.chunk.js.LICENSE.txt": "/React-Solitaire/static/js/2.d16c85c8.chunk.js.LICENSE.txt",
+    "static/media/Card.css": "/React-Solitaire/static/media/spade.38034ed3.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a9576d7e.js",
+    "static/js/2.d16c85c8.chunk.js",
+    "static/css/main.04f227fb.chunk.css",
+    "static/js/main.a2bb368b.chunk.js"
+  ]
+}
