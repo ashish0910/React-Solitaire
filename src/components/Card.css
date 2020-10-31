@@ -1,4 +1,5 @@
 .card {
+  position: relative;
   border: 1px solid black;
   cursor: pointer;
   width: 7vw;
@@ -48,6 +49,7 @@
 
 .card__selected {
   border: 2px solid red;
+  box-shadow: none !important;
 }
 
 .card__remcards {

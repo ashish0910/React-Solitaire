@@ -114,7 +114,11 @@ export const drag = (event, card, game, setgame) => {
 
 export const dragEnter = (event, game, setgame, card, deck) => {
   var tempDecks = [...game.decks];
-  if (card !== "" && card != game.selectedCard) {
+  if (card === "" && game.selectedCard !== "") {
+    tempDecks.forEach((deck) =>
+      deck.forEach((tempCard) => (tempCard.isHighlighted = false))
+    );
+  } else if (card !== "" && card != game.selectedCard) {
     var deckIdx = tempDecks.indexOf(deck);
     var cardIdx = tempDecks[deckIdx].indexOf(card);
     tempDecks.forEach((deck) =>
@@ -155,18 +159,8 @@ export const moveCards = function (toDeck, fromDeck, fromCard, setgame, game) {
 };
 
 export const selectCard = (card, deck, holder, game, setgame) => {
-  if (holder && game.selectedCard) {
-    if (game.selectedCard.rank == "K") {
-      if (checkMovable(game.selectedCard && game.selectedDeck)) {
-        moveCards(deck, game.selectedDeck, game.selectedCard);
-        isHandComplete(deck, game, setgame);
-        removeSelection(game, setgame);
-      } else {
-        removeSelection(game, setgame);
-      }
-    }
-  }
   if (game.selectedCard == "") {
+    if (holder) return;
     if (card.isDown) {
       return;
     }
@@ -208,8 +202,8 @@ export const drop = (event, card, game, setgame) => {
           game.highlightedDeck,
           game.selectedDeck,
           game.selectedCard,
-          game,
-          setgame
+          setgame,
+          game
         );
         isHandComplete(game.highlightedDeck, game, setgame);
         removeSelection(game, setgame);

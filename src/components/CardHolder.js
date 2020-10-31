@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import "./CardHolder.css";
 
-function CardHolder() {
-  return <div className="card">ss</div>;
+function CardHolder({ isHighlighted }) {
+  const [highlighted, sethighlighted] = useState("");
+  useEffect(() => {
+    if (isHighlighted) {
+      sethighlighted(" cardholder__highlight");
+    } else {
+      sethighlighted("");
+    }
+  }, [isHighlighted]);
+  return <div className={"cardholder" + highlighted}></div>;
 }
 
 export default CardHolder;

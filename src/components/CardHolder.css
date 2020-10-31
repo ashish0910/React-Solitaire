@@ -1,0 +1,12 @@
+.cardholder {
+  position: relative;
+  border: 2px solid blue;
+  cursor: pointer;
+  width: 7vw;
+  height: 9.8vw;
+  border-radius: 0.3vw;
+}
+
+.cardholder__highlighted {
+  border: 5px solid blue;
+}
