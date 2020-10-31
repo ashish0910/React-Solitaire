@@ -66,6 +66,7 @@ function OneSuite() {
                       className="card__wrapper card__stack"
                       draggable={true}
                       onDragStart={(e) => {
+                        console.log("drag");
                         dragStart(e, card, deck, game, setgame);
                       }}
                       onDrag={(e) => {
@@ -78,6 +79,10 @@ function OneSuite() {
                       }}
                       onDragEnd={(e) => {
                         drop(e, card, game, setgame);
+                      }}
+                      onClick={(e) => {
+                        console.log("select");
+                        selectCard(card, deck, null, game, setgame);
                       }}
                     >
                       <Card

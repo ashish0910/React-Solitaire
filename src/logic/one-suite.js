@@ -3,6 +3,7 @@ import * as _ from "lodash";
 import cardInfo from "../utils/cardInfo";
 import { getRank } from "./shared";
 
+// Function to generate card decks
 export const populateOneSuitCards = () => {
   let cards = [],
     decks;
@@ -30,6 +31,7 @@ export const populateOneSuitCards = () => {
   };
 };
 
+// Function to check whether given card/cards can be selected to move or not
 export const checkMovable = (card, deck) => {
   var tempDeck = [...deck];
   var movingCards = tempDeck.slice(deck.indexOf(card));
@@ -44,6 +46,8 @@ export const checkMovable = (card, deck) => {
   return true;
 };
 
+// Function to check whether current move to drop currently selected card to
+// a target is valid or not
 export const checkMove = (target, deck, game) => {
   if (
     target.suit == game.selectedCard.suit &&
@@ -56,6 +60,7 @@ export const checkMove = (target, deck, game) => {
   return false;
 };
 
+// Function to delete currently selected card from selected state
 export const removeSelection = (game, setgame) => {
   if (game.selectedCard !== "" || game.highlightedCard !== "") {
     var decks = [...game.decks];
@@ -91,6 +96,7 @@ export const dragStart = (event, card, deck, game, setgame) => {
   selectCard(card, deck, null, game, setgame);
 };
 
+// Function to add css animation to show movement of selected card and decks
 export const drag = (event, card, game, setgame) => {
   game.selected.forEach((card) => {
     var child = document.getElementById(
@@ -112,6 +118,7 @@ export const drag = (event, card, game, setgame) => {
   });
 };
 
+// Set Highlighted cards ( Cards which will be potential drop targets based on user movements)
 export const dragEnter = (event, game, setgame, card, deck) => {
   var tempDecks = [...game.decks];
   if (card === "" && game.selectedCard !== "") {
@@ -134,6 +141,7 @@ export const dragEnter = (event, game, setgame, card, deck) => {
   }));
 };
 
+// Function to transfer cards from one deck to another
 export const moveCards = function (toDeck, fromDeck, fromCard, setgame, game) {
   var tempDeck = [...game.decks];
   var to = tempDeck.indexOf(toDeck);
@@ -158,13 +166,25 @@ export const moveCards = function (toDeck, fromDeck, fromCard, setgame, game) {
   }));
 };
 
+// Function to mantain Selection of cards
+// ( Also handles cases of select and drop in case of click events )
 export const selectCard = (card, deck, holder, game, setgame) => {
+  // Handle drop of card on CardHolder(Blank) by click functionality
+  if (holder && game.selectedCard !== "") {
+    if (game.selectedCard.rank === "K") {
+      moveCards(deck, game.selectedDeck, game.selectedCard, setgame, game);
+      isHandComplete(deck, game, setgame);
+      removeSelection(game, setgame);
+    }
+  }
+  var tempCard = card;
+  // Handling select card by on click and drag and drop
   if (game.selectedCard == "") {
     if (holder) return;
     if (card.isDown) {
       return;
     }
-    var tempCard = card;
+
     if (checkMovable(card, deck)) {
       tempCard.isSelected = true;
       var tempDeck = [...deck];
@@ -178,23 +198,24 @@ export const selectCard = (card, deck, holder, game, setgame) => {
         selectedCard: card,
         selectedDeck: deck,
       }));
+    }
+  } else {
+    // Handling moving of cards by click functionality
+    console.log("ppart2");
+    if (checkMove(tempCard, deck, game)) {
+      console.log("game", game);
+      moveCards(deck, game.selectedDeck, game.selectedCard, setgame, game);
+      isHandComplete(deck, game, setgame);
+      removeSelection(game, setgame);
     } else {
-      if (checkMove(tempCard, deck, game)) {
-        if (checkMovable(game.card, game.deck)) {
-          moveCards(deck, game.selectedDeck, game.selectedCard, setgame, game);
-          isHandComplete(deck, game, setgame);
-          removeSelection(game, setgame);
-        } else {
-          removeSelection(game, setgame);
-        }
-      } else {
-        removeSelection(game, setgame);
-      }
+      removeSelection(game, setgame);
     }
   }
 };
 
+// Function to handle when selected cards are dropped on some other cards
 export const drop = (event, card, game, setgame) => {
+  // Case when deck is empty ( Drop event occurs on CardHolder )
   if (game.highlightedCard == "") {
     if (card.rank == "K") {
       if (checkMovable(game.selectedCard, game.selectedDeck)) {
@@ -212,6 +233,7 @@ export const drop = (event, card, game, setgame) => {
       }
     }
   }
+  // Drop on cards Case
   if (checkMove(game.highlightedCard, game.highlightedDeck, game)) {
     if (checkMovable(game.selectedCard, game.selectedDeck)) {
       game.selected.forEach((card) => {
@@ -253,6 +275,7 @@ export const drop = (event, card, game, setgame) => {
   }
 };
 
+// Util function to check K Q J 10 .... 3 2 A Set is formed or not
 export const checkDeck = (deck) => {
   var ranks = deck.map((card) => {
     return getRank(card.rank);
@@ -264,6 +287,7 @@ export const checkDeck = (deck) => {
   return false;
 };
 
+// Function to check K Q J 10 .... 3 2 A Set is formed or not
 export const isHandComplete = (deck, game, setgame) => {
   var len = checkDeck(deck);
   if (len !== false) {
@@ -280,10 +304,12 @@ export const isHandComplete = (deck, game, setgame) => {
       decks: tempDecks,
       hands: curHands + 1,
     }));
+    // Game over case
     if (curHands + 1 === 8) console.log("khatam , bye bye tata");
   }
 };
 
+// Add remaining cards to decks
 export const distributeRemCards = (game, setgame) => {
   if (game.decks[10].length !== 0) {
     var tempDecks = [...game.decks];
