@@ -13,7 +13,7 @@ import { BrowserRouter as Router, Switch } from "react-router-dom";
 function App() {
   return (
     <div className="app">
-      <Router>
+      <Router basename={process.env.PUBLIC_URL}>
         <Switch>
           <Home exact path={ROUTES.HOME}></Home>
           <Klondike path={ROUTES.KLONDIKE}></Klondike>
