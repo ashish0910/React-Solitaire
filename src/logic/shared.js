@@ -79,6 +79,10 @@ export const dragStart = (event, card, deck, game, setgame) => {
     x: x,
     y: y,
   }));
+  if (game.selectedCard === card) {
+    console.log(game);
+    return;
+  }
   removeSelection(game, setgame);
   selectCard(card, deck, null, game, setgame);
 };
@@ -113,8 +117,10 @@ export const dragEnter = (event, game, setgame, card, deck) => {
       deck.forEach((tempCard) => (tempCard.isHighlighted = false))
     );
   } else if (card !== "" && card != game.selectedCard) {
+    if (game.selected.indexOf(card) != -1) return;
     var deckIdx = tempDecks.indexOf(deck);
     var cardIdx = tempDecks[deckIdx].indexOf(card);
+    if (cardIdx != tempDecks[deckIdx].length - 1) return;
     tempDecks.forEach((deck) =>
       deck.forEach((tempCard) => (tempCard.isHighlighted = false))
     );
@@ -188,9 +194,7 @@ export const selectCard = (card, deck, holder, game, setgame) => {
     }
   } else {
     // Handling moving of cards by click functionality
-    console.log("ppart2");
     if (checkMove(tempCard, deck, game)) {
-      console.log("game", game);
       moveCards(deck, game.selectedDeck, game.selectedCard, setgame, game);
       isHandComplete(deck, game, setgame);
       removeSelection(game, setgame);
@@ -280,7 +284,6 @@ export const isHandComplete = (deck, game, setgame) => {
   if (len !== false) {
     var tempDecks = [...game.decks];
     var curDeckIdx = tempDecks.indexOf(deck);
-    console.log(curDeckIdx);
     tempDecks[curDeckIdx].splice(len);
     var curHands = game.hands;
     if (tempDecks[curDeckIdx].length != 0) {
@@ -292,7 +295,7 @@ export const isHandComplete = (deck, game, setgame) => {
       hands: curHands + 1,
     }));
     // Game over case
-    if (curHands + 1 === 8) console.log("khatam , bye bye tata");
+    if (curHands + 1 === 8) console.log("Game Over");
   }
 };
 
