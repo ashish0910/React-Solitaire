@@ -8,7 +8,14 @@ export const populateFourSuitCards = () => {
   cardInfo["rank"].forEach((rank) => {
     cardInfo["suit"].forEach((suit) => {
       for (let i = 1; i <= 2; i++) {
-        cards.push({ rank: rank, suit: suit, isDown: true, deck: i });
+        cards.push({
+          rank: rank,
+          suit: suit,
+          isDown: true,
+          deck: i,
+          isSelected: false,
+          isHighlighted: false,
+        });
       }
     });
   });

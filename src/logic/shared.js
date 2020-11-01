@@ -80,7 +80,6 @@ export const dragStart = (event, card, deck, game, setgame) => {
     y: y,
   }));
   if (game.selectedCard === card) {
-    console.log(game);
     return;
   }
   removeSelection(game, setgame);

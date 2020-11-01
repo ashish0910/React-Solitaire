@@ -56,15 +56,15 @@ function OneSuite() {
                 <CardHolder key={index + " 1"} deck={deck} />
               </div>
             ) : (
-              <div>
-                <div key={index + " 2"} deck={deck}>
+              <div key={index + " 2"} deck={deck}>
+                <div key={index + " 3"} deck={deck}>
                   {deck.map((card, key) => (
                     <div
+                      key={card.rank + " " + card.suit + " " + card.deck + " 0"}
                       id={card.rank + " " + card.suit + " " + card.deck}
                       className="card__wrapper card__stack"
                       draggable={true}
                       onDragStart={(e) => {
-                        console.log("drag");
                         dragStart(e, card, deck, game, setgame);
                       }}
                       onDrag={(e) => {
@@ -79,7 +79,6 @@ function OneSuite() {
                         drop(e, card, game, setgame);
                       }}
                       onClick={(e) => {
-                        console.log("select");
                         selectCard(card, deck, null, game, setgame);
                       }}
                     >

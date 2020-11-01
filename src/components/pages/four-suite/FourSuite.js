@@ -76,6 +76,9 @@ function FourSuite() {
                       onDragEnd={(e) => {
                         drop(e, card, game, setgame);
                       }}
+                      onClick={(e) => {
+                        selectCard(card, deck, null, game, setgame);
+                      }}
                     >
                       <Card
                         key={card.rank + " " + card.suit + " " + card.deck}
