@@ -6,16 +6,38 @@ import { populateKlondikeCards } from "../../../logic/klondike";
 
 function Klondike() {
   const [cards, setcards] = useState({});
+  const [game, setgame] = useState({
+    cards: [],
+    decks: [],
+    selectedCard: "",
+    selectedDeck: "",
+    selected: [],
+    hands: 0,
+    x: -1,
+    y: -1,
+    highlightedDeck: "",
+    highlightedCard: "",
+    foundation: ["", "", "", ""],
+  });
   useEffect(() => {
     const val = populateKlondikeCards();
     setcards(val);
+    setgame((prevState) => ({
+      ...prevState,
+      cards: val.cards,
+      decks: val.decks,
+    }));
   }, []);
   return (
     <div className="klondike">
-      <div className="klondike__upper"></div>
+      <div className="klondike__upper">
+        <div className="card"></div>
+        <div className="card"></div>
+        <div>{}</div>
+      </div>
       <div className="klondike__bottom">
         {cards.hasOwnProperty("decks") &&
-          cards.decks.slice(0, 7).map((deck, index) => (
+          game.decks.slice(0, 7).map((deck, index) => (
             <React.Fragment>
               {deck.length === 0 ? (
                 <div id="holder" key={index + "0"}>

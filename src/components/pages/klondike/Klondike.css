@@ -4,3 +4,28 @@
   justify-content: space-around;
   padding-top: 10px;
 }
+
+.klondike__upper {
+  display: flex;
+  flex-direction: row;
+}
+
+.klondike__upper-left {
+  text-align: left;
+}
+
+.klondike__upper-left-card {
+  position: absolute;
+  left: 6vw;
+  top: 6vh;
+}
+
+.klondike__upper-left-cardholder {
+  position: absolute;
+  left: 12vw;
+  top: 6vh;
+}
+
+.klondike__upper-right {
+  text-align: right;
+}

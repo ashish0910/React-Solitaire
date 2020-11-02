@@ -47,7 +47,8 @@ export const checkMove = (target, deck, game) => {
   return false;
 };
 
-// Function to delete currently selected card from selected state
+// Function to delete currently selected card from selected state and
+// highighted card from highlighted state
 export const removeSelection = (game, setgame) => {
   if (game.selectedCard !== "" || game.highlightedCard !== "") {
     var decks = [...game.decks];
