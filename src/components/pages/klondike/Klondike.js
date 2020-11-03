@@ -111,7 +111,33 @@ function Klondike() {
         ) : (
           <div className="card"></div>
         )}
-        <div>{}</div>
+        <div className="klondike__upper__row">
+          {cards.hasOwnProperty("decks") &&
+            game.foundation.map((card, index) => (
+              <div>
+                {card == "" ? (
+                  <div className="card"></div>
+                ) : (
+                  <div
+                    onClick={(e) => {
+                      selectCard(card, index, "foundation");
+                    }}
+                    onDragEnter={(e) => {
+                      dragEnter(e, game, setgame, card, index);
+                    }}
+                  >
+                    <Card
+                      key={card.rank + " " + card.suit + " " + card.deck}
+                      card={card}
+                      isSelected={card.isSelected}
+                      isDown={card.isDown}
+                      isHighlighted={card.isHighlighted}
+                    ></Card>
+                  </div>
+                )}
+              </div>
+            ))}
+        </div>
       </div>
       <div className="klondike__bottom">
         {cards.hasOwnProperty("decks") &&

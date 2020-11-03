@@ -8,6 +8,7 @@
 .klondike__upper {
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
 }
 
 .klondike__upper-left {
@@ -28,4 +29,10 @@
 
 .klondike__upper-right {
   text-align: right;
+}
+
+.klondike__upper__row {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-around;
 }

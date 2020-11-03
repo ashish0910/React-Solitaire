@@ -13,7 +13,6 @@ export const removeSelection = (game, setgame) => {
     }
     var tempDealingCards = game.dealingCards;
     if (tempDealingCards) {
-      console.log(tempDealingCards);
       for (var i = 0; i < tempDealingCards.length; i++) {
         tempDealingCards[i].isSelected = false;
         tempDealingCards[i].isHighlighted = false;
@@ -41,8 +40,10 @@ export const moveCards = function (toDeck, fromDeck, fromCard, setgame, game) {
     var tempDealingDeck = [...game.dealingCards];
     var movedCard = tempDealingDeck.pop();
     movedCard.isSelected = false;
-    tempDeck[to][tempDeck[to].length - 1].isHighlighted = false;
+    if (tempDeck[to][tempDeck[to].length - 1])
+      tempDeck[to][tempDeck[to].length - 1].isHighlighted = false;
     tempDeck[to].push(movedCard);
+    console.log(tempDealingDeck);
     setgame((prevState) => ({
       ...prevState,
       dealingCards: tempDealingDeck,
@@ -52,6 +53,7 @@ export const moveCards = function (toDeck, fromDeck, fromCard, setgame, game) {
       highlightedCard: "",
       highlightedDeck: "",
     }));
+    console.log(game);
   } else {
     var cardIdx = tempDeck[from].indexOf(fromCard);
 
@@ -180,6 +182,9 @@ export const checkFoundation = (foundation, card) => {
 // Function to add css animation to show movement of selected card and decks
 export const drag = (event, card, game, setgame, dealer) => {
   game.selected.forEach((card) => {
+    console.log(
+      document.getElementById(card.rank + " " + card.suit + " " + card.deck)
+    );
     if (dealer) {
       var child = document.getElementById(
         card.rank + " " + card.suit + " " + card.deck
@@ -273,9 +278,9 @@ export const drop = (event, card, game, setgame, dealer) => {
             child.style.cssText = css;
           }
         });
-        removeSelection(game, setgame);
       }
     }
+    return;
   }
   if (checkMove(game.highlightedCard, game.selectedCard)) {
     if (checkMovable(game.selectedCard, game.selectedDeck)) {
@@ -372,7 +377,7 @@ export const selectCard = (card, deck, game, setgame, type) => {
   if (type === "holder" && game.selectedCard !== "") {
     if (game.selectedCard.rank === "K") {
       moveCards(deck, game.selectedDeck, game.selectedCard, setgame, game);
-      removeSelection(game, setgame);
+      return;
     } else {
       removeSelection(game, setgame);
     }
@@ -402,7 +407,6 @@ export const selectCard = (card, deck, game, setgame, type) => {
     // Handling moving of cards by click functionality
     if (checkMove(tempCard, game.selectedCard)) {
       moveCards(deck, game.selectedDeck, game.selectedCard, setgame, game);
-      removeSelection(game, setgame);
     } else {
       removeSelection(game, setgame);
     }
