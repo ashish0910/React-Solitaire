@@ -1,6 +1,6 @@
 import * as _ from "lodash";
 import cardInfo from "../utils/cardInfo";
-import { getRank, removeSelection, drag, dragEnter } from "./shared";
+import { getRank, removeSelection, dragEnter, moveCards } from "./shared";
 
 export const populateKlondikeCards = () => {
   let cards = [],
@@ -54,8 +54,11 @@ export const dragStart = (event, card, deck, game, setgame) => {
     x: x,
     y: y,
   }));
+  if (game.selectedCard === card) {
+    return;
+  }
   removeSelection(game, setgame);
-  // selectCard()
+  selectCard(card, deck, game, setgame, "dealing");
 };
 
 export const checkMovable = (card, deck) => {
@@ -99,20 +102,138 @@ export const checkFoundation = (foundation, card) => {
   return false;
 };
 
-export const selectCard = (card, deck, holder, game, setgame, type) => {
+// Function to add css animation to show movement of selected card and decks
+export const drag = (event, card, game, setgame, dealer) => {
+  game.selected.forEach((card) => {
+    if (dealer) {
+    } else {
+      var child = document.getElementById(
+        card.rank + " " + card.suit + " " + card.deck
+      ).children[0];
+    }
+
+    var movex = event.pageX - game.x;
+    var movey = event.pageY - game.y;
+    if (event.pageX == 0) {
+      var css = "z-index:9999;transform:translate(0px,0px);display:none;";
+    } else {
+      var css =
+        "z-index:9999;pointer-events: none; transform: scale(1.05, 1.05) rotate(0deg) translate(" +
+        movex +
+        "px, " +
+        movey +
+        "px);";
+    }
+    child.style.cssText = css;
+  });
+};
+
+export const drop = (event, card, game, setgame, dealer) => {
+  if (typeof game.highlightedDeck == "number") {
+  }
+  if (game.highlightedCard === "") {
+    if (card.rank === "K") {
+      if (checkMovable(game.selectedCard, game.selectedDeck)) {
+        moveCards(
+          game.highlightedDeck,
+          game.selectedDeck,
+          game.selectedCard,
+          setgame,
+          game
+        );
+        removeSelection(game, setgame);
+      }
+    }
+  }
+  if (checkMove(game.highlightedCard, game.selectedCard)) {
+    if (checkMovable(game.selectedCard, game.selectedDeck)) {
+      game.selected.forEach((card) => {
+        if (dealer) {
+        } else {
+          var child = document.getElementById(
+            card.rank + " " + card.suit + " " + card.deck
+          ).children[0];
+          var css = "z-index:0;pointer-events:auto;display:none;";
+          child.style.cssText = css;
+        }
+      });
+      moveCards(
+        game.highlightedDeck,
+        game.selectedDeck,
+        game.selectedCard,
+        setgame,
+        game
+      );
+      removeSelection(game, setgame);
+      return;
+    } else {
+      game.selected.forEach((card) => {
+        var child = document.getElementById(
+          card.rank + " " + card.suit + " " + card.deck
+        ).children[0];
+        var css = "z-index:0;pointer-events:auto;";
+        child.style.cssText = css;
+      });
+      removeSelection(game, setgame);
+    }
+  } else {
+    game.selected.forEach((card) => {
+      if (dealer) {
+      } else {
+        var child = document.getElementById(
+          card.rank + " " + card.suit + " " + card.deck
+        ).children[0];
+        var css = "z-index:0;pointer-events:auto;";
+        child.style.cssText = css;
+      }
+    });
+    removeSelection(game, setgame);
+  }
+};
+
+export const selectCard = (card, deck, game, setgame, type) => {
   if (type === "dealing" && game.selectedCard !== "") {
     removeSelection(game, setgame);
     return;
   }
   if (type === "foundation") {
     if (game.selectedCard !== "") {
+      if (
+        game.selectedDeck[game.selectedDeck.length - 1] == game.selectedCard
+      ) {
+        if (checkFoundation(card, game.selectedCard)) {
+          var tempFoundation = [...game.foundation];
+          tempFoundation[deck] = game.selectedCard;
+          var tempDecks = [...game.decks];
+          var deckIdx = tempDecks.indexOf(game.selectedDeck);
+          tempDecks[deckIdx].pop();
+          try {
+            if (
+              tempDecks[deckIdx][tempDecks[deckIdx].length - 1].isDown === true
+            ) {
+              tempDecks[deckIdx][tempDecks[deckIdx].length - 1].isDown = false;
+            }
+          } catch (error) {
+            console.log(error);
+          }
+          setgame((prevState) => ({
+            ...prevState,
+            decks: tempDecks,
+            selectedCard: "",
+            selectedDeck: "",
+            foundation: tempFoundation,
+          }));
+        }
+      }
+      removeSelection(game, setgame);
     } else {
       return;
     }
   }
   if (type === "holder" && game.selectedCard !== "") {
     if (game.selectedCard.rank === "K") {
-      // movecards
+      moveCards(deck, game.selectedDeck, game.selectedCard, setgame, game);
+      removeSelection(game, setgame);
     } else {
       removeSelection(game, setgame);
     }
@@ -120,7 +241,7 @@ export const selectCard = (card, deck, holder, game, setgame, type) => {
   var tempCard = card;
   // Handling select card by on click and drag and drop
   if (game.selectedCard === "") {
-    if (holder) return;
+    if (type === "holder") return;
     if (card.isDown) {
       return;
     }
@@ -140,11 +261,40 @@ export const selectCard = (card, deck, holder, game, setgame, type) => {
     }
   } else {
     // Handling moving of cards by click functionality
-    if (checkMove(tempCard, deck, game)) {
-      // moveCards(deck, game.selectedDeck, game.selectedCard, setgame, game);
+    if (checkMove(tempCard, game.selectedCard)) {
+      moveCards(deck, game.selectedDeck, game.selectedCard, setgame, game);
       removeSelection(game, setgame);
     } else {
       removeSelection(game, setgame);
     }
   }
+};
+
+export const fillDealCard = (game, setgame) => {
+  var tempDealingCards = game.dealingCards;
+  tempDealingCards = tempDealingCards.reverse();
+  var tempDecks = [...game.decks];
+  tempDecks[7] = tempDealingCards;
+  setgame((prevState) => ({
+    ...prevState,
+    decks: tempDecks,
+    dealingCards: [],
+  }));
+};
+
+export const addDealCard = (game, setgame) => {
+  if (game.decks[7].length === 0) {
+    fillDealCard(game, setgame);
+    return;
+  }
+  var tempDecks = game.decks;
+  var tempCard = tempDecks[7].pop();
+  tempCard.isDown = false;
+  var tempDealingCards = [...game.dealingCards];
+  tempDealingCards.push(tempCard);
+  setgame((prevState) => ({
+    ...prevState,
+    decks: tempDecks,
+    dealingCards: tempDealingCards,
+  }));
 };

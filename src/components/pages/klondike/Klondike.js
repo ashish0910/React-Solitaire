@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import "./Klondike.css";
 import CardHolder from "../../CardHolder";
 import Card from "../../Card";
-import { populateKlondikeCards } from "../../../logic/klondike";
+import {
+  populateKlondikeCards,
+  selectCard,
+  dragStart,
+  drag,
+  drop,
+} from "../../../logic/klondike";
+import { dragEnter } from "../../../logic/shared";
 
 function Klondike() {
   const [cards, setcards] = useState({});
@@ -18,6 +25,7 @@ function Klondike() {
     highlightedDeck: "",
     highlightedCard: "",
     foundation: ["", "", "", ""],
+    dealingCards: [],
   });
   useEffect(() => {
     const val = populateKlondikeCards();
@@ -40,7 +48,16 @@ function Klondike() {
           game.decks.slice(0, 7).map((deck, index) => (
             <React.Fragment>
               {deck.length === 0 ? (
-                <div id="holder" key={index + "0"}>
+                <div
+                  id="holder"
+                  key={index + "0"}
+                  onClick={() => {
+                    selectCard("", deck, game, setgame, "holder");
+                  }}
+                  onDragEnter={(e) => {
+                    dragEnter(e, game, setgame, "", deck);
+                  }}
+                >
                   <CardHolder key={index + " 1"} deck={deck} />
                 </div>
               ) : (
@@ -54,6 +71,23 @@ function Klondike() {
                         id={card.rank + " " + card.suit + " " + card.deck}
                         className="card__wrapper card__stack"
                         draggable={true}
+                        onDragStart={(e) => {
+                          dragStart(e, card, deck, game, setgame);
+                        }}
+                        onDrag={(e) => {
+                          drag(e, card, game, setgame);
+                        }}
+                        onDragEnter={(e) => {
+                          if (card.isDown == false) {
+                            dragEnter(e, game, setgame, card, deck);
+                          }
+                        }}
+                        onDragEnd={(e) => {
+                          drop(e, card, game, setgame);
+                        }}
+                        onClick={(e) => {
+                          selectCard(card, deck, game, setgame);
+                        }}
                       >
                         <Card
                           key={card.rank + " " + card.suit + " " + card.deck}
