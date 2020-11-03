@@ -1,6 +1,79 @@
 import * as _ from "lodash";
 import cardInfo from "../utils/cardInfo";
-import { getRank, removeSelection, dragEnter, moveCards } from "./shared";
+import { getRank, dragEnter } from "./shared";
+
+export const removeSelection = (game, setgame) => {
+  if (game.selectedCard !== "" || game.highlightedCard !== "") {
+    var decks = [...game.decks];
+    for (let i = 0; i < decks.length; i++) {
+      for (let j = 0; j < decks[i].length; j++) {
+        decks[i][j].isSelected = false;
+        decks[i][j].isHighlighted = false;
+      }
+    }
+    var tempDealingCards = game.dealingCards;
+    if (tempDealingCards) {
+      console.log(tempDealingCards);
+      for (var i = 0; i < tempDealingCards.length; i++) {
+        tempDealingCards[i].isSelected = false;
+        tempDealingCards[i].isHighlighted = false;
+      }
+    }
+    setgame((prevState) => ({
+      ...prevState,
+      selected: [],
+      decks: decks,
+      selectedCard: "",
+      selectedDeck: "",
+      highlightedCard: "",
+      highlightedDeck: "",
+      dealingCards: tempDealingCards,
+    }));
+  }
+};
+
+// Function to transfer cards from one deck to another
+export const moveCards = function (toDeck, fromDeck, fromCard, setgame, game) {
+  var tempDeck = [...game.decks];
+  var to = tempDeck.indexOf(toDeck);
+  var from = tempDeck.indexOf(fromDeck);
+  if (from === -1) {
+    var tempDealingDeck = [...game.dealingCards];
+    var movedCard = tempDealingDeck.pop();
+    movedCard.isSelected = false;
+    tempDeck[to][tempDeck[to].length - 1].isHighlighted = false;
+    tempDeck[to].push(movedCard);
+    setgame((prevState) => ({
+      ...prevState,
+      dealingCards: tempDealingDeck,
+      decks: tempDeck,
+      selectedCard: "",
+      selectedDeck: "",
+      highlightedCard: "",
+      highlightedDeck: "",
+    }));
+  } else {
+    var cardIdx = tempDeck[from].indexOf(fromCard);
+
+    var movedCards = tempDeck[from].splice(cardIdx);
+
+    movedCards.forEach((card) => {
+      tempDeck[to].push(card);
+    });
+    try {
+      if (tempDeck[from][tempDeck[from].length - 1].isDown == true) {
+        tempDeck[from][tempDeck[from].length - 1].isDown = false;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    setgame((prevState) => ({
+      ...prevState,
+      decks: tempDeck,
+    }));
+    removeSelection(game, setgame);
+  }
+};
 
 export const populateKlondikeCards = () => {
   let cards = [],
@@ -15,6 +88,7 @@ export const populateKlondikeCards = () => {
           isSelected: false,
           isHighlighted: false,
           color: "black",
+          deck: 1,
         });
       } else {
         cards.push({
@@ -24,6 +98,7 @@ export const populateKlondikeCards = () => {
           isSelected: false,
           isHighlighted: false,
           color: "red",
+          deck: 1,
         });
       }
     });
@@ -106,6 +181,9 @@ export const checkFoundation = (foundation, card) => {
 export const drag = (event, card, game, setgame, dealer) => {
   game.selected.forEach((card) => {
     if (dealer) {
+      var child = document.getElementById(
+        card.rank + " " + card.suit + " " + card.deck
+      ).children[0];
     } else {
       var child = document.getElementById(
         card.rank + " " + card.suit + " " + card.deck
@@ -134,12 +212,17 @@ export const drop = (event, card, game, setgame, dealer) => {
       checkFoundation(game.highlightedCard && game.selectedCard) &&
       game.selected.length === 1
     ) {
+      var tempFoundation = [...game.foundation];
       tempFoundation[game.highlightedDeck] = game.selectedCard;
       var tempDecks = [...game.decks];
       var deckIdx = tempDecks.indexOf(game.selectedDeck);
       game.selected.forEach((card) => {
         if (dealer) {
           var css = "z-index:0;pointer-events:auto;";
+          var child = document.getElementById(
+            card.rank + " " + card.suit + " " + card.deck
+          ).children[0];
+          child.style.cssText = css;
         } else {
           var child = document.getElementById(
             card.rank + " " + card.suit + " " + card.deck
@@ -178,6 +261,10 @@ export const drop = (event, card, game, setgame, dealer) => {
         game.selected.forEach((card) => {
           if (dealer) {
             var css = "z-index:0;pointer-events:auto;";
+            var child = document.getElementById(
+              card.rank + " " + card.suit + " " + card.deck
+            ).children[0];
+            child.style.cssText = css;
           } else {
             var child = document.getElementById(
               card.rank + " " + card.suit + " " + card.deck
@@ -194,6 +281,11 @@ export const drop = (event, card, game, setgame, dealer) => {
     if (checkMovable(game.selectedCard, game.selectedDeck)) {
       game.selected.forEach((card) => {
         if (dealer) {
+          var css = "z-index:0;pointer-events:auto;";
+          var child = document.getElementById(
+            card.rank + " " + card.suit + " " + card.deck
+          ).children[0];
+          child.style.cssText = css;
         } else {
           var child = document.getElementById(
             card.rank + " " + card.suit + " " + card.deck
@@ -209,7 +301,6 @@ export const drop = (event, card, game, setgame, dealer) => {
         setgame,
         game
       );
-      removeSelection(game, setgame);
       return;
     } else {
       game.selected.forEach((card) => {
@@ -224,6 +315,11 @@ export const drop = (event, card, game, setgame, dealer) => {
   } else {
     game.selected.forEach((card) => {
       if (dealer) {
+        var css = "z-index:0;pointer-events:auto;";
+        var child = document.getElementById(
+          card.rank + " " + card.suit + " " + card.deck
+        ).children[0];
+        child.style.cssText = css;
       } else {
         var child = document.getElementById(
           card.rank + " " + card.suit + " " + card.deck

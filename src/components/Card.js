@@ -23,7 +23,7 @@ function Card({ card, isSelected, isDown, isHighlighted }) {
     } else {
       sethighlight("");
     }
-  }, [isDown, isSelected, isHighlighted]);
+  }, [isDown, isSelected, isHighlighted, card.suit]);
   return (
     <div className={"card" + down + select + highlight}>
       <div className="card__content card__rank-left">{card.rank}</div>

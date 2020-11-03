@@ -8,6 +8,7 @@ import {
   dragStart,
   drag,
   drop,
+  addDealCard,
 } from "../../../logic/klondike";
 import { dragEnter } from "../../../logic/shared";
 
@@ -39,8 +40,77 @@ function Klondike() {
   return (
     <div className="klondike">
       <div className="klondike__upper">
-        <div className="card"></div>
-        <div className="card"></div>
+        {cards.hasOwnProperty("decks") && game.decks[7].length > 0 ? (
+          <div
+            onClick={(e) => {
+              addDealCard(game, setgame);
+            }}
+            className="card"
+          ></div>
+        ) : (
+          <div className="card"></div>
+        )}
+        {cards.hasOwnProperty("decks") && game.dealingCards.length > 0 ? (
+          <div
+            id={
+              game.dealingCards[game.dealingCards.length - 1].rank +
+              " " +
+              game.dealingCards[game.dealingCards.length - 1].suit +
+              " " +
+              game.dealingCards[game.dealingCards.length - 1].deck
+            }
+            draggable={true}
+            onDragStart={(e) => {
+              dragStart(
+                e,
+                game.dealingCards[game.dealingCards.length - 1],
+                game.dealingCards,
+                game,
+                setgame
+              );
+            }}
+            onClick={(e) => {
+              selectCard(
+                game.dealingCards[game.dealingCards.length - 1],
+                game.dealingCards,
+                game,
+                setgame,
+                "dealing"
+              );
+            }}
+            onDrag={(e) => {
+              drag(
+                e,
+                game.dealingCards[game.dealingCards.length - 1],
+                game,
+                setgame,
+                true
+              );
+            }}
+            onDragEnd={(e) => {
+              drop(
+                e,
+                game.dealingCards[game.dealingCards.length - 1],
+                game,
+                setgame,
+                true
+              );
+            }}
+          >
+            <Card
+              card={game.dealingCards[game.dealingCards.length - 1]}
+              isSelected={
+                game.dealingCards[game.dealingCards.length - 1].isSelected
+              }
+              isDown={game.dealingCards[game.dealingCards.length - 1].isDown}
+              isHighlighted={
+                game.dealingCards[game.dealingCards.length - 1].isHighlighted
+              }
+            ></Card>
+          </div>
+        ) : (
+          <div className="card"></div>
+        )}
         <div>{}</div>
       </div>
       <div className="klondike__bottom">
