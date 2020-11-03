@@ -130,6 +130,40 @@ export const drag = (event, card, game, setgame, dealer) => {
 
 export const drop = (event, card, game, setgame, dealer) => {
   if (typeof game.highlightedDeck == "number") {
+    if (
+      checkFoundation(game.highlightedCard && game.selectedCard) &&
+      game.selected.length === 1
+    ) {
+      tempFoundation[game.highlightedDeck] = game.selectedCard;
+      var tempDecks = [...game.decks];
+      var deckIdx = tempDecks.indexOf(game.selectedDeck);
+      game.selected.forEach((card) => {
+        if (dealer) {
+          var css = "z-index:0;pointer-events:auto;";
+        } else {
+          var child = document.getElementById(
+            card.rank + " " + card.suit + " " + card.deck
+          ).children[0];
+          var css = "z-index:0;pointer-events:auto;display:none;";
+          child.style.cssText = css;
+        }
+      });
+      tempDecks[deckIdx].pop();
+      try {
+        if (tempDecks[deckIdx][tempDecks[deckIdx].length - 1].isDown === true) {
+          tempDecks[deckIdx][tempDecks[deckIdx].length - 1].isDown = false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      setgame((prevState) => ({
+        ...prevState,
+        decks: tempDecks,
+        foundation: tempFoundation,
+      }));
+      removeSelection(game, setgame);
+      return;
+    }
   }
   if (game.highlightedCard === "") {
     if (card.rank === "K") {
@@ -141,6 +175,17 @@ export const drop = (event, card, game, setgame, dealer) => {
           setgame,
           game
         );
+        game.selected.forEach((card) => {
+          if (dealer) {
+            var css = "z-index:0;pointer-events:auto;";
+          } else {
+            var child = document.getElementById(
+              card.rank + " " + card.suit + " " + card.deck
+            ).children[0];
+            var css = "z-index:0;pointer-events:auto;display:none;";
+            child.style.cssText = css;
+          }
+        });
         removeSelection(game, setgame);
       }
     }
@@ -219,8 +264,6 @@ export const selectCard = (card, deck, game, setgame, type) => {
           setgame((prevState) => ({
             ...prevState,
             decks: tempDecks,
-            selectedCard: "",
-            selectedDeck: "",
             foundation: tempFoundation,
           }));
         }
