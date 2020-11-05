@@ -54,7 +54,7 @@ function Klondike() {
             onClick={(e) => {
               addDealCard(game, setgame);
             }}
-            className="card"
+            className="cardholder"
           ></div>
         )}
         {cards.hasOwnProperty("decks") && game.dealingCards.length > 0 ? (
@@ -110,9 +110,6 @@ function Klondike() {
                 game.dealingCards[game.dealingCards.length - 1].isSelected
               }
               isDown={game.dealingCards[game.dealingCards.length - 1].isDown}
-              isHighlighted={
-                game.dealingCards[game.dealingCards.length - 1].isHighlighted
-              }
             ></Card>
           </div>
         ) : (
@@ -121,7 +118,7 @@ function Klondike() {
         <div className="klondike__upper__row">
           {cards.hasOwnProperty("decks") &&
             game.foundation.map((card, index) => (
-              <div>
+              <div className="spacer">
                 {card == "" ? (
                   <div
                     className="cardholder"
@@ -146,7 +143,6 @@ function Klondike() {
                       card={card}
                       isSelected={false}
                       isDown={card.isDown}
-                      isHighlighted={card.isHighlighted}
                     ></Card>
                   </div>
                 )}
@@ -205,7 +201,6 @@ function Klondike() {
                           card={card}
                           isSelected={card.isSelected}
                           isDown={card.isDown}
-                          isHighlighted={card.isHighlighted}
                         ></Card>
                       </div>
                     ))}

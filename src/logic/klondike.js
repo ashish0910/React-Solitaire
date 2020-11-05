@@ -1,30 +1,18 @@
 import * as _ from "lodash";
 import cardInfo from "../utils/cardInfo";
 import { getRank } from "./shared";
-import Card from "../components/Card";
 
 export const removeSelection = (game, setgame) => {
-  if (game.selectedCard !== "" || game.highlightedCard !== "") {
+  if (game.selectedCard !== "") {
     var decks = [...game.decks];
     for (let i = 0; i < decks.length; i++) {
       for (let j = 0; j < decks[i].length; j++) {
         decks[i][j].isSelected = false;
-        decks[i][j].isHighlighted = false;
       }
     }
-    var tempFoundation = [...game.foundation];
-    tempFoundation.forEach((card) => {
-      if (card) {
-        card.isSelected = false;
-        card.isHighlighted = false;
-      }
-    });
-    var tempDealingCards = game.dealingCards;
-    if (tempDealingCards) {
-      for (var i = 0; i < tempDealingCards.length; i++) {
-        tempDealingCards[i].isSelected = false;
-        tempDealingCards[i].isHighlighted = false;
-      }
+    var tempDealingDeck = game.dealingCards;
+    for (var i = 0; i < tempDealingDeck.length; i++) {
+      tempDealingDeck[i].isSelected = false;
     }
     setgame((prevState) => ({
       ...prevState,
@@ -34,72 +22,18 @@ export const removeSelection = (game, setgame) => {
       selectedDeck: "",
       highlightedCard: "",
       highlightedDeck: "",
-      dealingCards: tempDealingCards,
-      foundation: tempFoundation,
+      dealingCards: tempDealingDeck,
     }));
   }
 };
 
 // Set Highlighted cards ( Cards which will be potential drop targets based on user movements)
 export const dragEnter = (event, game, setgame, card, deck) => {
-  var tempDecks = [...game.decks];
-  if (card === "" && game.selectedCard !== "") {
-    tempDecks.forEach((deck) =>
-      deck.forEach((tempCard) => (tempCard.isHighlighted = false))
-    );
-    setgame((prevState) => ({
-      ...prevState,
-      highlightedCard: card,
-      highlightedDeck: deck,
-      decks: tempDecks,
-    }));
-  } else if (
-    card !== "" &&
-    card != game.selectedCard &&
-    typeof deck != "number"
-  ) {
-    if (game.selected.indexOf(card) != -1) return;
-    var deckIdx = tempDecks.indexOf(deck);
-    var cardIdx = tempDecks[deckIdx].indexOf(card);
-    if (cardIdx != tempDecks[deckIdx].length - 1) return;
-    tempDecks.forEach((deck) =>
-      deck.forEach((tempCard) => (tempCard.isHighlighted = false))
-    );
-    tempDecks[deckIdx][cardIdx].isHighlighted = true;
-    setgame((prevState) => ({
-      ...prevState,
-      highlightedCard: card,
-      highlightedDeck: deck,
-      decks: tempDecks,
-    }));
-  } else if (
-    card !== "" &&
-    card != game.selectedCard &&
-    typeof deck == "number"
-  ) {
-    var tempDecks = [...game.decks];
-    tempDecks.forEach((deck) => {
-      deck.forEach((card) => {
-        card.isHighlighted = false;
-      });
-    });
-    var tempFoundation = [...game.foundation];
-    tempFoundation.forEach((card) => {
-      if (card) {
-        card.isHighlighted = false;
-      }
-    });
-    if (tempFoundation[deck]) {
-      tempFoundation[deck].isHighlighted = true;
-    }
-    setgame((prevState) => ({
-      ...prevState,
-      highlightedCard: tempFoundation[deck],
-      highlightedDeck: deck,
-      decks: tempDecks,
-      foundation: tempFoundation,
-    }));
-  }
+  setgame((prevState) => ({
+    ...prevState,
+    highlightedCard: card,
+    highlightedDeck: deck,
+  }));
 };
 
 // Function to transfer cards from one deck to another
@@ -253,15 +187,9 @@ export const checkFoundation = (foundation, card) => {
 // Function to add css animation to show movement of selected card and decks
 export const drag = (event, card, game, setgame, dealer) => {
   game.selected.forEach((card) => {
-    if (dealer) {
-      var child = document.getElementById(
-        card.rank + " " + card.suit + " " + card.deck
-      ).children[0];
-    } else {
-      var child = document.getElementById(
-        card.rank + " " + card.suit + " " + card.deck
-      ).children[0];
-    }
+    var child = document.getElementById(
+      card.rank + " " + card.suit + " " + card.deck
+    ).children[0];
 
     var movex = event.pageX - game.x;
     var movey = event.pageY - game.y;
@@ -285,25 +213,17 @@ export const drop = (event, card, game, setgame, dealer) => {
       checkFoundation(game.highlightedCard, game.selectedCard) &&
       game.selected.length === 1
     ) {
-      console.log("ss");
       var tempFoundation = [...game.foundation];
       tempFoundation[game.highlightedDeck] = game.selectedCard;
+      tempFoundation[game.highlightedDeck].isSelected = false;
       var tempDecks = [...game.decks];
       var deckIdx = tempDecks.indexOf(game.selectedDeck);
       game.selected.forEach((card) => {
-        if (dealer) {
-          var css = "z-index:0;pointer-events:auto;";
-          var child = document.getElementById(
-            card.rank + " " + card.suit + " " + card.deck
-          ).children[0];
-        } else {
-          var child = document.getElementById(
-            card.rank + " " + card.suit + " " + card.deck
-          ).children[0];
-          var css = "z-index:0;pointer-events:auto;";
-          child.style.cssText = css;
-          console.log(child.style.cssText);
-        }
+        var child = document.getElementById(
+          card.rank + " " + card.suit + " " + card.deck
+        ).children[0];
+        var css = "z-index:0;pointer-events:auto;";
+        child.style.cssText = css;
       });
       if (deckIdx == -1) {
         var tempDealingDeck = game.dealingCards;
@@ -336,6 +256,14 @@ export const drop = (event, card, game, setgame, dealer) => {
           foundation: tempFoundation,
         }));
       }
+    } else {
+      game.selected.forEach((card) => {
+        var child = document.getElementById(
+          card.rank + " " + card.suit + " " + card.deck
+        ).children[0];
+        var css = "z-index:0;pointer-events:auto;";
+        child.style.cssText = css;
+      });
     }
     removeSelection(game, setgame);
     return;
@@ -437,12 +365,12 @@ export const selectCard = (card, deck, game, setgame, type) => {
         if (checkFoundation(card, game.selectedCard)) {
           var tempFoundation = [...game.foundation];
           tempFoundation[deck] = game.selectedCard;
+          tempFoundation[deck].isSelected = false;
           var tempDecks = [...game.decks];
           var deckIdx = tempDecks.indexOf(game.selectedDeck);
           if (deckIdx == -1) {
             var tempDealingDeck = game.dealingCards;
-            var movedCard = tempDealingDeck.pop();
-            movedCard.isSelected = false;
+            tempDealingDeck.pop();
             setgame((prevState) => ({
               ...prevState,
               dealingCards: tempDealingDeck,
@@ -470,24 +398,27 @@ export const selectCard = (card, deck, game, setgame, type) => {
             setgame((prevState) => ({
               ...prevState,
               decks: tempDecks,
+              selected: [],
+              selectedCard: "",
+              selectedDeck: "",
+              highlightedCard: "",
+              highlightedDeck: "",
               foundation: tempFoundation,
             }));
           }
+          return;
         }
-        removeSelection(game, setgame);
       }
-    } else {
-      return;
     }
+    removeSelection(game, setgame);
     return;
   }
   if (type === "holder" && game.selectedCard !== "") {
     if (game.selectedCard.rank === "K") {
       moveCards(deck, game.selectedDeck, game.selectedCard, setgame, game);
       return;
-    } else {
-      removeSelection(game, setgame);
     }
+    removeSelection(game, setgame);
   }
   var tempCard = card;
   // Handling select card by on click and drag and drop
