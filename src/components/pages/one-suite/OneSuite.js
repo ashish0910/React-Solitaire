@@ -10,6 +10,7 @@ import {
 } from "../../../logic/shared";
 import CardHolder from "../../CardHolder";
 import Card from "../../Card";
+import Back from "../../Back";
 
 import "./OneSuite.css";
 
@@ -39,6 +40,7 @@ function OneSuite() {
 
   return (
     <div className="onesuite">
+      <Back></Back>
       {cards.hasOwnProperty("decks") &&
         game.decks.slice(0, 10).map((deck, index) => (
           <React.Fragment>

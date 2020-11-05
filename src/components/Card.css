@@ -38,7 +38,9 @@
 }
 
 .card__down {
-  background-color: orange;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("../assets/card_back.png");
   text-decoration: transparent;
   margin-bottom: -8.5vw;
 }

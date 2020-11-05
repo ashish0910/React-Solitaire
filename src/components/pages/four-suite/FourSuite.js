@@ -11,6 +11,8 @@ import {
 } from "../../../logic/shared";
 import CardHolder from "../../CardHolder";
 import Card from "../../Card";
+import Back from "../../Back";
+
 function FourSuite() {
   const [cards, setcards] = useState({});
   const [game, setgame] = useState({
@@ -38,6 +40,7 @@ function FourSuite() {
 
   return (
     <div className="foursuite">
+      <Back></Back>
       {cards.hasOwnProperty("decks") &&
         game.decks.slice(0, 10).map((deck, index) => (
           <React.Fragment>

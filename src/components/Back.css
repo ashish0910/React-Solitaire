@@ -1,0 +1,10 @@
+.back {
+  cursor: pointer;
+  font-size: 2vw;
+  position: absolute;
+  top: 1vh;
+  left: 2vw;
+  border: none;
+  background: none;
+  color: -internal-light-dark(black, white);
+}

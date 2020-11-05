@@ -5,6 +5,23 @@
   width: 7vw;
   height: 9.8vw;
   border-radius: 0.3vw;
+  opacity: 0.5;
+  background-color: black;
+}
+
+.cardholder__bg {
+  position: relative;
+  cursor: pointer;
+  width: 7vw;
+  height: 9.8vw;
+  border-radius: 0.3vw;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("../assets/card_back.png");
+}
+
+.cardholder__bg:hover {
+  box-shadow: 4px 4px 10px rgb(247, 210, 0);
 }
 
 .cardholder__highlighted {

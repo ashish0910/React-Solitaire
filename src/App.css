@@ -1,5 +1,7 @@
 .app {
   text-align: center;
-  background-color: green;
+  background-size: cover;
+  background-position: center;
+  background: url("./assets/green_back.jpg");
   height: 100vh;
 }

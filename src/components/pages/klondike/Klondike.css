@@ -2,10 +2,11 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  padding-top: 10px;
+  padding-top: 5vh;
 }
 
 .klondike__upper {
+  padding-top: 8vh;
   display: flex;
   flex-direction: row;
   justify-content: space-around;

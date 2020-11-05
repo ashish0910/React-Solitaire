@@ -9,8 +9,9 @@ import {
   drag,
   drop,
   addDealCard,
+  dragEnter,
 } from "../../../logic/klondike";
-import { dragEnter } from "../../../logic/shared";
+import Back from "../../Back";
 
 function Klondike() {
   const [cards, setcards] = useState({});
@@ -39,16 +40,22 @@ function Klondike() {
   }, []);
   return (
     <div className="klondike">
+      <Back></Back>
       <div className="klondike__upper">
         {cards.hasOwnProperty("decks") && game.decks[7].length > 0 ? (
           <div
             onClick={(e) => {
               addDealCard(game, setgame);
             }}
-            className="card"
+            className="cardholder__bg"
           ></div>
         ) : (
-          <div className="card"></div>
+          <div
+            onClick={(e) => {
+              addDealCard(game, setgame);
+            }}
+            className="card"
+          ></div>
         )}
         {cards.hasOwnProperty("decks") && game.dealingCards.length > 0 ? (
           <div
@@ -109,18 +116,26 @@ function Klondike() {
             ></Card>
           </div>
         ) : (
-          <div className="card"></div>
+          <div className="cardholder"></div>
         )}
         <div className="klondike__upper__row">
           {cards.hasOwnProperty("decks") &&
             game.foundation.map((card, index) => (
               <div>
                 {card == "" ? (
-                  <div className="card"></div>
+                  <div
+                    className="cardholder"
+                    onClick={(e) => {
+                      selectCard(card, index, game, setgame, "foundation");
+                    }}
+                    onDragEnter={(e) => {
+                      dragEnter(e, game, setgame, card, index);
+                    }}
+                  ></div>
                 ) : (
                   <div
                     onClick={(e) => {
-                      selectCard(card, index, "foundation");
+                      selectCard(card, index, game, setgame, "foundation");
                     }}
                     onDragEnter={(e) => {
                       dragEnter(e, game, setgame, card, index);
@@ -129,7 +144,7 @@ function Klondike() {
                     <Card
                       key={card.rank + " " + card.suit + " " + card.deck}
                       card={card}
-                      isSelected={card.isSelected}
+                      isSelected={false}
                       isDown={card.isDown}
                       isHighlighted={card.isHighlighted}
                     ></Card>
