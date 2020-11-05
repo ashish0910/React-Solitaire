@@ -15,3 +15,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.screensizewarn {
+  display: none;
+}
+
+@media screen and (orientation: portrait) {
+  .app__gameplay {
+    display: none;
+  }
+  .screensizewarn {
+    display: block;
+  }
+}

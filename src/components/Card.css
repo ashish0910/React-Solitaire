@@ -102,3 +102,45 @@
   background-position: center;
   background-size: 50%;
 }
+
+@media screen and (max-width: 1390px) and (min-width: 1200px) {
+  .card__content {
+    font-size: 12px;
+  }
+  .card__selected {
+    border: 2px solid red;
+    box-shadow: none !important;
+  }
+  .card__highlighted {
+    border: 2px solid palevioletred;
+    box-shadow: none !important;
+  }
+}
+
+@media screen and (max-width: 1199px) and (min-width: 781px) {
+  .card__content {
+    font-size: 9px;
+  }
+  .card__selected {
+    border: 2px solid red;
+    box-shadow: none !important;
+  }
+  .card__highlighted {
+    border: 2px solid palevioletred;
+    box-shadow: none !important;
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .card__content {
+    font-size: 7.5px;
+  }
+  .card__selected {
+    border: 2px solid red;
+    box-shadow: none !important;
+  }
+  .card__highlighted {
+    border: 2px solid palevioletred;
+    box-shadow: none !important;
+  }
+}

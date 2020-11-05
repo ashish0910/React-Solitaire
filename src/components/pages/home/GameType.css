@@ -1,6 +1,10 @@
 .gametype {
   cursor: pointer;
+  background-color: red;
+  border: 2px solid white;
   text-decoration: none;
+  height: 30vh;
+  width: 20vw;
 }
 
 .gametype > a,
@@ -9,4 +13,26 @@ a:focus,
 a:active {
   text-decoration: none;
   color: inherit;
+}
+
+.gametype__one-suite {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("../../../assets/one-suite.png");
+  width: 100%;
+  height: 20vh;
+}
+.gametype__four-suite {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("../../../assets/four-suite.png");
+  width: 100%;
+  height: 20vh;
+}
+.gametype__klondike {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("../../../assets/klondike.png");
+  width: 100%;
+  height: 20vh;
 }
