@@ -50,8 +50,8 @@
 }
 
 .card__selected {
-  border: 4px solid red;
-  box-shadow: none !important;
+  box-shadow: 10px 10px 12px black !important;
+  border: 2px solid black;
 }
 
 .card__remcards {
@@ -70,8 +70,8 @@
 }
 
 .card__highlighted {
-  border: 4px solid palevioletred;
-  box-shadow: none !important;
+  box-shadow: 5px 5px 10px red !important;
+  border: 2px solid red;
 }
 
 .heart {

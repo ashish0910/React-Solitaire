@@ -28,3 +28,21 @@ code {
     display: block;
   }
 }
+
+.card-enter {
+  opacity: 0.01;
+}
+
+.card-enter.card-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.card-leave {
+  opacity: 1;
+}
+
+.card-leave.card-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}

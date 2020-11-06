@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import "./Klondike.css";
 import CardHolder from "../../CardHolder";
 import Card from "../../Card";
@@ -169,7 +170,13 @@ function Klondike() {
                 </div>
               ) : (
                 <div key={index + " 2"} deck={deck}>
-                  <div key={index + " 3"} deck={deck}>
+                  <ReactCSSTransitionGroup
+                    transitionName="card"
+                    transitionEnterTimeout={500}
+                    transitionLeaveTimeout={300}
+                    key={index + " 3"}
+                    deck={deck}
+                  >
                     {deck.map((card, key) => (
                       <div
                         key={
@@ -204,7 +211,7 @@ function Klondike() {
                         ></Card>
                       </div>
                     ))}
-                  </div>
+                  </ReactCSSTransitionGroup>
                 </div>
               )}
             </React.Fragment>

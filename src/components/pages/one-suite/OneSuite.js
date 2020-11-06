@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import { populateOneSuitCards } from "../../../logic/one-suite";
 import {
   dragStart,
@@ -59,7 +60,13 @@ function OneSuite() {
               </div>
             ) : (
               <div key={index + " 2"} deck={deck}>
-                <div key={index + " 3"} deck={deck}>
+                <ReactCSSTransitionGroup
+                  transitionName="card"
+                  transitionEnterTimeout={500}
+                  transitionLeaveTimeout={300}
+                  key={index + " 3"}
+                  deck={deck}
+                >
                   {deck.map((card, key) => (
                     <div
                       key={card.rank + " " + card.suit + " " + card.deck + " 0"}
@@ -93,7 +100,7 @@ function OneSuite() {
                       />
                     </div>
                   ))}
-                </div>
+                </ReactCSSTransitionGroup>
               </div>
             )}
           </React.Fragment>

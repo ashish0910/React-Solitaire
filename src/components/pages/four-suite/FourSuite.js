@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import "./FourSuite.css";
 import { populateFourSuitCards } from "../../../logic/four-suite";
 import {
@@ -59,7 +60,15 @@ function FourSuite() {
               </div>
             ) : (
               <div>
-                <div key={index + " 2"} deck={deck}>
+                <ReactCSSTransitionGroup
+                  transitionName="card"
+                  transitionEnterTimeout={500}
+                  transitionLeaveTimeout={300}
+                  key={index + " 3"}
+                  deck={deck}
+                  key={index + " 2"}
+                  deck={deck}
+                >
                   {deck.map((card, key) => (
                     <div
                       id={card.rank + " " + card.suit + " " + card.deck}
@@ -92,7 +101,7 @@ function FourSuite() {
                       />
                     </div>
                   ))}
-                </div>
+                </ReactCSSTransitionGroup>
               </div>
             )}
           </React.Fragment>

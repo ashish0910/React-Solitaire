@@ -7,7 +7,7 @@ function Back() {
     <div>
       <Link to={"/"}>
         <button className="back">
-          <i class="fas fa-long-arrow-alt-left"></i> Menu
+          <i className="fas fa-long-arrow-alt-left"></i> Menu
         </button>
       </Link>
     </div>
