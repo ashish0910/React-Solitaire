@@ -8,7 +8,8 @@ Set of Spider Solitaire games built in React.
 
 ## How to Play:
 
--**_Drag and Drop_**: Drag and Drop the card or set of cards to desired location -**_Click_**: Click the card/set of of cards you want to move then click the desired location
+- **_Drag and Drop_**: Drag and Drop the card or set of cards to desired location
+- **_Click_**: Click the card/set of of cards you want to move then click the desired location
 
 ## One Suit Spider Solitaire
 
