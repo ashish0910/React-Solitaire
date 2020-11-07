@@ -1,3 +1,8 @@
 .header {
   padding-top: 20vh;
+  padding-bottom: 5vh;
+  color: #222220;
+  font-size: 4vw;
+  font-weight: 600;
+  font-family: "Dancing Script", cursive;
 }

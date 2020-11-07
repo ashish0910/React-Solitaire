@@ -8,9 +8,9 @@ function Home() {
     <div className="home">
       <Header />
       <GameTypeWrapper>
-        <GameType type="one-suite" />
-        <GameType type="four-suite" />
-        <GameType type="klondike" />
+        <GameType type="one-suite" heading="One Suit" />
+        <GameType type="four-suite" heading="Four Suit" />
+        <GameType type="klondike" heading="Klondike" />
       </GameTypeWrapper>
     </div>
   );

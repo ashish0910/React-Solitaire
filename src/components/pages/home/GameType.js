@@ -2,16 +2,19 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./GameType.css";
 
-function GameType(props) {
+function GameType({ type, heading }) {
   return (
-    <div className="gametype">
-      <Link to={props.type}>
-        <div>
-          <div className={`gametype__${props.type}`}></div>
-          <div className="gametype__link"> {props.type} </div>
+    <Link className="gametype__removedecoration" to={type}>
+      <div className="gametype">
+        <img
+          className="gametype__image"
+          src={`https://raw.githubusercontent.com/ashish0910/React-Solitaire/main/src/assets/${type}.png`}
+        />
+        <div className="gametype__link">
+          <h3> {heading} Solitaire </h3>
         </div>
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 }
 

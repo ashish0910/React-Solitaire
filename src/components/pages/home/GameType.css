@@ -1,38 +1,45 @@
 .gametype {
   cursor: pointer;
-  background-color: red;
-  border: 2px solid white;
-  text-decoration: none;
-  height: 30vh;
-  width: 20vw;
+  background-color: #222220;
+  height: 34vh;
+  width: 26vw;
+  padding: 4%;
+  box-shadow: 5px 5px 10px black;
+  border-radius: 5px;
 }
 
-.gametype > a,
-a:hover,
-a:focus,
-a:active {
+.gametype__removedecoration {
   text-decoration: none;
-  color: inherit;
+  color: aliceblue;
 }
 
-.gametype__one-suite {
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-image: url("../../../assets/one-suite.png");
-  width: 100%;
-  height: 20vh;
+.gametype__link {
+  position: relative;
+  top: 3vh;
 }
-.gametype__four-suite {
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-image: url("../../../assets/four-suite.png");
-  width: 100%;
-  height: 20vh;
+
+.gametype__image {
+  height: 23vh;
+  width: 23vw;
+  margin: 0;
+  padding: 0;
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid lightblue;
 }
-.gametype__klondike {
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-image: url("../../../assets/klondike.png");
-  width: 100%;
-  height: 20vh;
+
+.gametype:hover {
+  transition: all 0.5s;
+  transform: scale(1.25, 1.25);
+  box-shadow: 15px 15px 30px black;
+}
+
+.gametype:hover img {
+  border: 4px solid lightblue;
+}
+
+.gametype:hover h3 {
+  transition: all 0.5s;
+  transform: scale(1.25, 1.25);
+  color: red;
 }
