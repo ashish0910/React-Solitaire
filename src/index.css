@@ -24,6 +24,9 @@ code {
   .app__gameplay {
     display: none;
   }
+  .home {
+    display: none;
+  }
   .screensizewarn {
     display: block;
   }

@@ -1,8 +1,8 @@
 .gametype {
   cursor: pointer;
   background-color: #222220;
-  height: 34vh;
-  width: 26vw;
+  height: 31vh;
+  width: 23vw;
   padding: 4%;
   box-shadow: 5px 5px 10px black;
   border-radius: 5px;
@@ -19,8 +19,8 @@
 }
 
 .gametype__image {
-  height: 23vh;
-  width: 23vw;
+  height: 20vh;
+  width: 20vw;
   margin: 0;
   padding: 0;
   border-radius: 5px;
